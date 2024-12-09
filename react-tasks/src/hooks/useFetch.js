@@ -1,39 +1,40 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
-export function useFetch(url) {
-    const [data, setData] = useState([])
-    const [error, setError] = useState(null)
-    const [isLoading, setLoading] = useState(true)
+export function useFetch(url, params = {}) {
+    const [isLoading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
 
-    async function getData(url, params){
-        const readyUrl = params?._limit ? `${url}?_limit=${params._limit}` : url;
-        const response = await fetch(readyUrl);
-        return response.json();
-    }
+    const getData = useCallback((params) => {
+        setLoading(true);
+
+        axios({
+            method: 'GET',
+            url,
+            ...params,
+        })
+        .then((response) => {
+        setData(response.data);
+        setError(null);
+        })
+        .catch((error) => {
+        setError(error);
+        setData(null);
+        })
+        .finally(() => {
+        setLoading(false);
+        });
+    }, [url])
 
     useEffect(() => {
-        getData(url)
-            .then(data => {
-                setData(data);
-                setLoading(false);
-            })
-            .catch(error => setError(error));
-    }, [url])
-
-    const refetch = useCallback(({ params }) => {
-        setLoading(true);
-        getData(url, params)
-            .then(data => {
-                setData(data);
-                setLoading(false)
-            })
-            .catch(error=>setError(error));
-    }, [url])
+        getData(params);
+    }, []);
 
     return {
         data,
         isLoading,
         error,
-        refetch
+        refetch: getData
     }
 }

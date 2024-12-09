@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 function useWindowEvent(type, listener, options) {
   useEffect(() => {
@@ -6,17 +6,19 @@ function useWindowEvent(type, listener, options) {
       window.addEventListener(type, listener, options);
       return () => window.removeEventListener(type, listener, options);
     }
-  }, [type, listener]);
+  }, [type, listener, options]);
 }
 
 export function useViewportSize() {
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
 
-    useWindowEvent('resize', (e)=>{
+    const setParams = useCallback((e) => {
         setWidth(e.target.innerWidth)
         setHeight(e.target.innerHeight)
-    }, [width, height])
+    }, [])
+
+    useWindowEvent('resize', setParams)
 
     return { height, width }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 function useWindowEvent(type, listener, options) {
   useEffect(() => {
@@ -6,18 +6,20 @@ function useWindowEvent(type, listener, options) {
       window.addEventListener(type, listener, options);
       return () => window.removeEventListener(type, listener, options);
     }
-  }, [type, listener]);
+  }, [type, listener, options]);
 }
 
 export function useWindowScroll() {
     const [scroll, setScroll] = useState({x: window.scrollX, y: window.scrollY});
 
-    useWindowEvent('scroll', ()=>{
+    const resizeScroll = useCallback(() => {
         setScroll({
             ...scroll,
             x: window.scrollX, y: window.scrollY
         })
     }, [scroll])
+
+    useWindowEvent('scroll', resizeScroll)
 
     const scrollTo = ({y}) => {
         window.scrollTo(scroll.x, y)

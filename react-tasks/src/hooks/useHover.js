@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 
 export function useHover() {
     const ref = useRef(null);
     const [hovered, setHovered] = useState(false);
 
-    const handleMouseOver = () => setHovered(true);
-    const handleMouseOut = () => setHovered(false);
+    const handleMouseOver = useCallback(() => setHovered(true), [])
+    const handleMouseOut = useCallback(() => setHovered(false), []);
 
     useEffect(() => {
         console.log('hello');
