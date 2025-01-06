@@ -1,9 +1,9 @@
 // import { useFetch } from './hooks/useFetch';
-// import { useLocalStorage } from './hooks/useLocalStorage.ts';
+import { useLocalStorage } from './hooks/useLocalStorage.ts';
 // import { useHover } from './hooks/useHover';
 // import { useViewportSize } from './hooks/useViewportSize';
 // import { useWindowScroll } from './hooks/useWindowScroll';
-import { useToggle } from './hooks/useToggle';
+// import { useToggle } from './hooks/useToggle';
 
 
 //useFetch
@@ -36,19 +36,19 @@ import { useToggle } from './hooks/useToggle';
 
 
 //useLocalStorage
-// function App() {
-//   const [value, { setItem, removeItem }] = useLocalStorage('some-key');
+function App() {
+  const [value, { setValue, removeItem }] = useLocalStorage('some-key');
 
-//   return (
-//     <div>
-//       <p>Значение из LocalStorage: {value}</p>
-//       <div>
-//         <button onClick={() => setItem('new storage value')}>Задать значение</button>
-//         <button onClick={() => removeItem()}>Удалить значение</button>
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <p>Значение из LocalStorage: {value}</p>
+      <div>
+        <button onClick={() => setValue('new storage value')}>Задать значение</button>
+        <button onClick={() => removeItem()}>Удалить значение</button>
+      </div>
+    </div>
+  );
+}
 
 
 //useHover
@@ -102,14 +102,14 @@ import { useToggle } from './hooks/useToggle';
 
 
 //useToggle
-function App() {
-  const [value, toggle] = useToggle(['blue', 'orange', 'cyan', 'teal']);
+// function App() {
+//   const [value, toggle] = useToggle(['blue', 'orange', 'cyan', 'teal']);
 
-  return (
-    <button onClick={() => toggle()}>
-      {value}
-    </button>
-  );
-}
+//   return (
+//     <button onClick={() => toggle()}>
+//       {value}
+//     </button>
+//   );
+// }
 
 export default App;
